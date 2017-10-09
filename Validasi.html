@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Validasi Page</title>
+</head>
+<body>
+    <h4>Hello Firebase App</h4>
+</body>
+
+</html>
+<script src="https://www.gstatic.com/firebasejs/4.5.0/firebase.js"></script>
+<script>
+    // Initialize Firebase
+    var config = {
+        apiKey: "AIzaSyBMOYsL2sNjYnGU89HBi60X67kM78P1tpw",
+        authDomain: "belajar-firebase2.firebaseapp.com",
+        databaseURL: "https://belajar-firebase2.firebaseio.com",
+        projectId: "belajar-firebase2",
+        storageBucket: "belajar-firebase2.appspot.com",
+        messagingSenderId: "182996346990"
+    };
+    firebase.initializeApp(config);
+
+    var fb = firebase.database();
+
+    function trendingNested(){
+        fb.ref('/posts/trending').once('value',function(dataSnapshot){
+           dataSnapshot.forEach(function(childs){
+               if(childs.key === 'aiza4'){
+                  console.log(childs.child('text').val());
+                  console.log(childs.child('text/desc').val());
+                  console.log(childs.child('text/size').val());
+               }
+           });
+        });
+    }
+
+//    function trendingChilds(id){
+//        fb.ref('/posts/trending').once('value',function(
+//            dataSnapshot
+//        ){
+//            dataSnapshot.forEach(function (childs){
+////                console.log('key : ' + childs.key + ' val : ' + childs.child('text').val());
+//                  var text = childs.child('text').val();
+//
+//                  if(text.toString().search('JDK') !== -1){
+//                      console.log('JDK category');
+//                      console.log(text);
+//                  }else{
+//                      console.log('another category');
+//                      console.log(text);
+//                  }
+//            });
+//        });
+//    }
+
+    function validasiData(key){
+        fb.ref('/posts').once('value',function(dataSnapshot){
+              if(dataSnapshot.hasChild(key.toString())){
+                  dataSnapshot.child(key.toString()).forEach(function(childs){
+                      if(childs.key === 'photo'){
+                          console.log('Filename photo user : ' + childs.child('filename').val());
+                          console.log('File size photo user : ' + childs.child('size').val());
+                      }
+
+                      if(childs.key === 'user'){
+                          console.log('Alamat user : ' + childs.child('alamat').val());
+                          console.log('Nama user : ' + childs.child('nama').val());
+                      }
+                  });
+              }else{
+                console.log('data tidak ada');
+              }
+        });
+    }
+
+    validasiData(457);
+//    trendingChilds(1);
+
+    trendingNested();
+
+</script>

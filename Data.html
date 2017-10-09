@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Firebase Data</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+    <table id="tabel-firebase" border="2">
+        <tr>
+            <td>Nim</td>
+            <td>Nama</td>
+        </tr>
+    </table>
+</body>
+
+</html>
+<script src="https://www.gstatic.com/firebasejs/4.5.0/firebase.js"></script>
+<script>
+    // Initialize Firebase
+    var config = {
+        apiKey: "AIzaSyBMOYsL2sNjYnGU89HBi60X67kM78P1tpw",
+        authDomain: "belajar-firebase2.firebaseapp.com",
+        databaseURL: "https://belajar-firebase2.firebaseio.com",
+        projectId: "belajar-firebase2",
+        storageBucket: "belajar-firebase2.appspot.com",
+        messagingSenderId: "182996346990"
+    };
+    firebase.initializeApp(config);
+
+    var fb = firebase.database();
+
+
+    function tambahBaris(mhs){
+        hapusBaris();
+        var tabel = document.getElementById('tabel-firebase');
+
+        var trJudul = document.createElement('tr');
+
+        var tdJudulNim = document.createElement('td');
+        tdJudulNim.innerHTML = "NIM";
+
+        var tdJudulNama = document.createElement('td');
+        tdJudulNama.innerHTML = "NAMA";
+
+
+        trJudul.appendChild(tdJudulNim);
+        trJudul.appendChild(tdJudulNama);
+
+        tabel.appendChild(trJudul);
+
+        for(var i = 0 ; i<mhs.length; i++){
+
+            var tr = document.createElement('tr');
+
+            var tdNim = document.createElement('td');
+            var tdNama = document.createElement('td');
+
+
+            tdNim.innerHTML = mhs[i].nim;
+            tdNama.innerHTML = mhs[i].nama;
+
+            tr.appendChild(tdNim);
+            tr.appendChild(tdNama);
+
+            tabel.appendChild(tr);
+        }
+    }
+
+    function hapusBaris(){
+        $('#tabel-firebase').empty();
+    }
+
+
+
+    function dataListener(){
+        fb.ref('/mhs').on('value',function(snap){
+           var mhs  = [];
+
+
+           snap.forEach(function(childSnap){
+              console.log(childSnap.child('nama').val());
+           });
+
+
+           snap.forEach(function(childSnap){
+             //Proses listing data atau push data ke array
+             mhs.push({
+                 nim : childSnap.key,
+                 nama : childSnap.child('nama').val()
+             });
+             //Proses listing data atau push data ke array
+           });
+           console.log(mhs);
+           tambahBaris(mhs);
+        });
+    }
+
+    dataListener();
+
+</script>
