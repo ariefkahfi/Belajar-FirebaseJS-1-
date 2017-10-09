@@ -24,17 +24,35 @@
 
     var fb = firebase.database();
 
-    function trendingNested(){
-        fb.ref('/posts/trending').once('value',function(dataSnapshot){
-           dataSnapshot.forEach(function(childs){
-               if(childs.key === 'aiza4'){
-                  console.log(childs.child('text').val());
-                  console.log(childs.child('text/desc').val());
-                  console.log(childs.child('text/size').val());
-               }
-           });
+    function readAllData(){
+        fb.ref('/posts').once('value',function(dataSnapshot){
+            dataSnapshot
+                .forEach(
+                    function(childs){
+                        if(childs.key !== '458' && childs.key !== 'trending'){
+                           var photoFilename = childs.child('photo');
+                           console.log(photoFilename.val());
+                           console.log(photoFilename.child('filename').val());
+                           console.log(photoFilename.child('size').val());
+                        }
+                    }
+                 );
         });
     }
+
+    readAllData();
+
+//    function trendingNested(){
+//        fb.ref('/posts/trending').once('value',function(dataSnapshot){
+//           dataSnapshot.forEach(function(childs){
+//               if(childs.key !== 'aiza4'){
+//                   console.log(
+//                     childs.child('text').val()
+//                   );
+//               }
+//           });
+//        });
+//    }
 
 //    function trendingChilds(id){
 //        fb.ref('/posts/trending').once('value',function(
@@ -75,9 +93,24 @@
         });
     }
 
-    validasiData(457);
-//    trendingChilds(1);
 
-    trendingNested();
+
+//    function testLastChild(){
+//        fb.ref('/posts').once('value',function(dataSnapshot){
+//           dataSnapshot.child(
+//               '458'
+//           ).forEach(function(childs){
+//               console.log(childs.val());
+//           });
+//        });
+//    }
+//
+//
+//    testLastChild();
+
+//    validasiData(457);
+////    trendingChilds(1);
+//
+//    trendingNested();
 
 </script>
