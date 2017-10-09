@@ -30,8 +30,15 @@
                 .forEach(
                     function(childs){
                         if(childs.key !== '458' && childs.key !== 'trending'){
+
+                           //Object :{photo:object,user:object}
+                           console.log(childs.val());
+
+                           //Object : {filename : '...' , size : '....'}
                            var photoFilename = childs.child('photo');
+
                            console.log(photoFilename.val());
+
                            console.log(photoFilename.child('filename').val());
                            console.log(photoFilename.child('size').val());
                         }
